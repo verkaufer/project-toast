@@ -1,52 +1,35 @@
 import React from 'react';
 
-import {
-  AlertOctagon,
-  AlertTriangle,
-  CheckCircle,
-  Info,
-} from "react-feather";
-
 import Button from '../Button';
 
 import styles from './ToastPlayground.module.css';
 import ToastShelf from "../ToastShelf";
-
-const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
-
-const DEFAULT_VARIANT = "notice";
+import {DEFAULT_VARIANT, VARIANT_OPTIONS} from "../../consts";
+import {ToastContext} from "../ToastProvider";
 
 function ToastPlayground() {
 
+  const { createToast } = React.useContext(ToastContext);
+
   const [toastMsg, setToastMsg] = React.useState("");
   const [variant, setVariant] = React.useState(DEFAULT_VARIANT);
-  const [toasts, setToasts] = React.useState([]);
 
   const handleVariantChange = (event) => {
     setVariant(event.target.value);
   }
 
-  const createToast = () => {
+  const addToast = () => {
 
     const newToast = {
-      id:  crypto.randomUUID(),
       variant,
-      msg: toastMsg,
+      toastMsg,
     }
-
-    setToasts((toasts) => (
-      [...toasts, newToast]
-    ))
+    createToast(newToast)
 
     setVariant(DEFAULT_VARIANT)
     setToastMsg("");
   }
 
-  const removeToast = (id) => {
-    setToasts((toasts) => (
-      toasts.filter((t) => t.id !== id)
-    ))
-  }
 
   return (
     <div className={styles.wrapper}>
@@ -55,7 +38,7 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {<ToastShelf toasts={toasts} removeToast={removeToast}/>}
+      <ToastShelf />
 
       {/* TODO: ADD FORM WRAPPER TAGS */}
       <div className={styles.controlsWrapper}>
@@ -89,7 +72,7 @@ function ToastPlayground() {
           <div
             className={`${styles.inputWrapper} ${styles.radioWrapper}`}
           >
-            <Button onClick={() => createToast()}>Pop Toast!</Button>
+            <Button onClick={() => addToast()}>Pop Toast!</Button>
           </div>
         </div>
       </div>
