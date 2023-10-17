@@ -14,6 +14,8 @@ function ToastPlayground() {
   const [toastMsg, setToastMsg] = React.useState("");
   const [variant, setVariant] = React.useState(DEFAULT_VARIANT);
 
+  const msgRef = React.useRef();
+
   const handleVariantChange = (event) => {
     setVariant(event.target.value);
   }
@@ -28,6 +30,7 @@ function ToastPlayground() {
 
     setVariant(DEFAULT_VARIANT)
     setToastMsg("");
+    msgRef.current?.focus();
   }
 
 
@@ -50,8 +53,15 @@ function ToastPlayground() {
             Message
           </label>
           <div className={styles.inputWrapper}>
-            <textarea id="message" className={styles.messageInput} value={toastMsg}
-                      onChange={(e) => setToastMsg(e.target.value)}/>
+            <textarea id="message"
+                      className={styles.messageInput}
+                      value={toastMsg}
+                      onChange={
+                        (e) =>
+                          setToastMsg(e.target.value)
+                      }
+                      ref={msgRef}
+            />
           </div>
         </div>
 
@@ -74,7 +84,7 @@ function ToastPlayground() {
             <Button onClick={(e) => addToast(e)}>Pop Toast!</Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
