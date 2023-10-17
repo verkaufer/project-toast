@@ -18,8 +18,8 @@ function ToastPlayground() {
     setVariant(event.target.value);
   }
 
-  const addToast = () => {
-
+  const addToast = (event) => {
+    event.preventDefault();
     const newToast = {
       variant,
       toastMsg,
@@ -40,8 +40,7 @@ function ToastPlayground() {
 
       <ToastShelf />
 
-      {/* TODO: ADD FORM WRAPPER TAGS */}
-      <div className={styles.controlsWrapper}>
+      <form className={styles.controlsWrapper} onSubmit={(e) => addToast(e)}>
         <div className={styles.row}>
           <label
             htmlFor="message"
@@ -72,7 +71,7 @@ function ToastPlayground() {
           <div
             className={`${styles.inputWrapper} ${styles.radioWrapper}`}
           >
-            <Button onClick={() => addToast()}>Pop Toast!</Button>
+            <Button onClick={(e) => addToast(e)}>Pop Toast!</Button>
           </div>
         </div>
       </div>
