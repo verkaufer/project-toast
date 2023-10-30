@@ -1,5 +1,6 @@
 import React from 'react';
 import {DEFAULT_VARIANT} from "../../consts";
+import {useEscapeKey} from "../../hooks/useEscapeKey";
 
 export const ToastContext = React.createContext();
 
@@ -8,18 +9,8 @@ function ToastProvider({children}) {
 
     const [toasts, setToasts] = React.useState([]);
 
-    /** Clear Toasts when user presses Escape key */
-    React.useEffect(() => {
+    useEscapeKey(() => setToasts([]));
 
-        function handleKeyUp (ev) {
-            // compat: Firefox 36 and earlier maps Escape key to `Esc`
-            if(ev.key === "Escape" || ev.key === "Esc") {
-                setToasts(() => ([]));
-            }
-        }
-        document.addEventListener("keyup", handleKeyUp)
-        return () => (document.removeEventListener("keyup", handleKeyUp))
-    }, [])
 
     const createToast = React.useCallback(({toastMsg, variant = DEFAULT_VARIANT}) => {
         const newToast = {
