@@ -22,13 +22,13 @@ function ToastProvider({children}) {
         setToasts((toasts) => (
             [...toasts, newToast]
         ))
-    }, [toasts]);
+    }, []);
 
     const deleteToast = React.useCallback((id) => {
         setToasts((toasts) => (
             toasts.filter((t) => t.id !== id)
         ))
-    }, [toasts])
+    }, [])
 
     return <ToastContext.Provider value={{
         toasts,
